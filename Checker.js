@@ -368,19 +368,31 @@ function pointInRect(x1, y1, x2, y2, x, y) {
   return (x <= x1 && x >= x2) && (y <= y1 && y >= y2)
 };
 
-var x = 0., y = 0.;
-var latLon = document.getElementById("uxLatLon").innerHTML;
-
-var  parts = latLon.match(/^([NS])\s(\d+).?\s*([0-9.\\.]+)\s*([(EW])\s(\d+).?\s*([0-9\.]+)/);
 var north = ""; var west = "";
-if (parts[1] === "S") {north = "-";}
-if (parts[4] === "W") {west = "-";}
-north = north + parts[2];
-var northMins = parseFloat(parts[3])/60. + " ";
-north = north + "." + northMins.substring(2);
-west = west + parts[5];
-var westMins = parseFloat(parts[6])/60. + " ";
-west = west + "." + westMins.substring(2);
+var parts;
+var latLon = document.getElementById("uxLatLon");
+if (latLon === null) {
+	latLon = prompt("Not a cache page. Manually enter coordinates in format:\n N dd mm.mmm W ddd mm.mmm or dd.ddd -dd.ddd");
+} else {
+	latLon = latLon.innerHTML;
+}
+
+if (latLon.indexOf("-") === -1) {
+	parts = latLon.match(/^([NS])\s?(\d+).?\s*([0-9.\\.]+),?\s*([(EW])\s?(\d+).?\s*([0-9\.]+)/);
+	if (parts[1] === "S") {north = "-";}
+	if (parts[4] === "W") {west = "-";}
+	north = north + parts[2];
+	var northMins = parseFloat(parts[3])/60. + " ";
+	north = north + "." + northMins.substring(2);
+	west = west + parts[5];
+	var westMins = parseFloat(parts[6])/60. + " ";
+	west = west + "." + westMins.substring(2);
+} else {
+	latLon = latLon.replace(/,/g,"");
+	parts = latLon.split("-");
+	north = parts[0];
+	west = -parts[1];
+}
 
 var norcalPage = "", goldenStatePage = ""; socalPage = "";
 for (var i=0; i< norcalGrid.length; i++ ) {
