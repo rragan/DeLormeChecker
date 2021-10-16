@@ -37,4 +37,4 @@ for (var i=0; i< grid.length; i++ ) {
     }
   };
 
-  alert(id + " DeLorme " + statePage );
+  alert(" DeLorme " + statePage );
